@@ -32,10 +32,22 @@ $(document).ready(function () {
                 console.log(result);
                 var data = result.data;
                 for (var i = 0; i < data.length; i++) {
-                    var image = $("<img>");
-                    image.attr("src", data[i].images.fixed_height.url);
+                    var image = $("<img data-state='still'>");
+                    image.attr("src", data[i].images.fixed_height_still.url);
+                    image.attr("data-still", data[i].images.fixed_height_still.url);
+                    image.attr("data-animated", data[i].images.fixed_height.url);
                     $("#gifSection").append(image);
                 }
+                $("img").on("click", function () {
+                    var state = $(this).attr("data-state");
+                    if (state === "still") {
+                        $(this).attr("src", $(this).attr("data-animated"));
+                        $(this).attr("data-state", "animate");
+                    } else {
+                        $(this).attr("src", $(this).attr("data-still"))
+                        $(this).attr("data-state", "still");
+                    }
+                });
             });
         });
     });
