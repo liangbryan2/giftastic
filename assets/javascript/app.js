@@ -8,47 +8,68 @@ var apiKey = "&api_key=shCGHocGsPVCVsc1KVmaEOzoa8XFiXFm";
 
 var limit = "&limit=10";
 
+function generateGifs(button) {
+    $("#gifSection").empty();
+    query = button.attr("data-hero");
+    $.ajax({
+        url: baseURL + query + apiKey + limit,
+        method: "GET"
+    }).then(function (result) {
+        console.log(result);
+        var data = result.data;
+        for (var i = 0; i < data.length; i++) {
+            var imgDiv = $("<div class='image'>");
+            var rating = $("<p>");
+            rating.text("Rating: " + data[i].rating);
+            var image = $("<img class='img' data-state='still'>");
+            image.attr("src", data[i].images.fixed_height_still.url);
+            image.attr("data-still", data[i].images.fixed_height_still.url);
+            image.attr("data-animated", data[i].images.fixed_height.url);
+            imgDiv.append(rating);
+            imgDiv.append(image);
+            $("#gifSection").append(imgDiv);
+        }
+        $(".img").on("click", function () {
+            var image = $(this);
+            playGif(image);
+        });
+    });
+}
+
+function playGif(image) {
+    var state = image.attr("data-state");
+    if (state === "still") {
+        image.attr("src", image.attr("data-animated"));
+        image.attr("data-state", "animate");
+    } else {
+        image.attr("src", image.attr("data-still"))
+        image.attr("data-state", "still");
+    }
+
+}
+
+function generateButtons() {
+    $("#heroes").empty();
+    for (var i = 0; i < heroArray.length; i++) {
+        var button = $("<button>");
+        button.attr("data-hero", heroArray[i]);
+        button.text(heroArray[i]);
+        $("#heroes").append(button);
+    }
+    $("button").on("click", function () {
+        var button = $(this);
+        generateGifs(button);
+    });
+}
+
 $(document).ready(function () {
+    generateButtons();
     $("#submit").on("click", function (event) {
         event.preventDefault();
         query = $("#searchBar").val();
         if (!heroArray.includes(query) && query) {
             heroArray.push(query);
         }
-        $("#heroes").empty();
-        for (var i = 0; i < heroArray.length; i++) {
-            var button = $("<button>");
-            button.attr("data-hero", heroArray[i]);
-            button.text(heroArray[i]);
-            $("#heroes").append(button);
-        }
-        $("button").on("click", function () {
-            $("#gifSection").empty();
-            query = $(this).attr("data-hero");
-            $.ajax({
-                url: baseURL + query + apiKey + limit,
-                method: "GET"
-            }).then(function (result) {
-                console.log(result);
-                var data = result.data;
-                for (var i = 0; i < data.length; i++) {
-                    var image = $("<img data-state='still'>");
-                    image.attr("src", data[i].images.fixed_height_still.url);
-                    image.attr("data-still", data[i].images.fixed_height_still.url);
-                    image.attr("data-animated", data[i].images.fixed_height.url);
-                    $("#gifSection").append(image);
-                }
-                $("img").on("click", function () {
-                    var state = $(this).attr("data-state");
-                    if (state === "still") {
-                        $(this).attr("src", $(this).attr("data-animated"));
-                        $(this).attr("data-state", "animate");
-                    } else {
-                        $(this).attr("src", $(this).attr("data-still"))
-                        $(this).attr("data-state", "still");
-                    }
-                });
-            });
-        });
+        generateButtons();
     });
 });

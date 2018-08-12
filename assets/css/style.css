@@ -1,0 +1,10 @@
+body {
+    background-image: url("../images/background.png")
+}
+
+
+.image {
+    display: inline-block;
+    text-align: center;
+    padding: 20px;
+}
