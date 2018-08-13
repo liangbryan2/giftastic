@@ -44,7 +44,7 @@ function generateGifs(button) {
             url: baseURL + query + apiKey + limit,
             method: "GET"
         }).then(function (result) {
-            // console.log(result);
+            console.log(result);
             var data = result.data;
             for (var i = 0; i < data.length; i++) {
                 var imgDiv = $("<div class='image'>");

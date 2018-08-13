@@ -1,12 +1,45 @@
 body {
-    background-image: url("../images/background.png");
+    background-image: url("../images/background.jpg");
     text-align: center;
     font-family: 'Bangers', cursive;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
+header {
+    transform: rotate(-10deg);
+    padding: 20px;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+#heroes {
+    padding: 10px;
+}
 
 .image {
     display: inline-block;
     text-align: center;
-    padding: 20px;
+    padding: 15px
+}
+
+.img {
+    border: 10px solid black;
+}
+
+button {
+    border: none;
+    background: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover {
+    cursor: pointer;
 }
