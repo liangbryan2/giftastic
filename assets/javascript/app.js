@@ -4,36 +4,66 @@ var baseURL = "https://api.giphy.com/v1/gifs/search?q=";
 
 var query;
 
-var apiKey = "&api_key=shCGHocGsPVCVsc1KVmaEOzoa8XFiXFm";
+var apiKey = "&api_key=dc6zaTOxFJmzC";
 
 var limit = "&limit=10";
+var offset = 0;
+var previous;
 
 function generateGifs(button) {
-    $("#gifSection").empty();
     query = button.attr("data-hero");
-    $.ajax({
-        url: baseURL + query + apiKey + limit,
-        method: "GET"
-    }).then(function (result) {
-        console.log(result);
-        var data = result.data;
-        for (var i = 0; i < data.length; i++) {
-            var imgDiv = $("<div class='image'>");
-            var rating = $("<p>");
-            rating.text("Rating: " + data[i].rating);
-            var image = $("<img class='img' data-state='still'>");
-            image.attr("src", data[i].images.fixed_height_still.url);
-            image.attr("data-still", data[i].images.fixed_height_still.url);
-            image.attr("data-animated", data[i].images.fixed_height.url);
-            imgDiv.append(rating);
-            imgDiv.append(image);
-            $("#gifSection").append(imgDiv);
-        }
-        $(".img").on("click", function () {
-            var image = $(this);
-            playGif(image);
+    if (previous === button.attr("data-hero")) {
+        offset += 10;
+        // console.log(offset);
+        $.ajax({
+            url: baseURL + query + apiKey + limit + "&offset=" + offset,
+            method: "GET"
+        }).then(function (result) {
+            var data = result.data;
+            for (var i = 0; i < data.length; i++) {
+                var imgDiv = $("<div class='image'>");
+                var rating = $("<p>");
+                rating.text("Rating: " + data[i].rating);
+                var image = $("<img class='img' data-state='still'>");
+                image.attr("src", data[i].images.fixed_height_still.url);
+                image.attr("data-still", data[i].images.fixed_height_still.url);
+                image.attr("data-animated", data[i].images.fixed_height.url);
+                imgDiv.append(rating);
+                imgDiv.append(image);
+                $("#gifSection").prepend(imgDiv);
+            }
+            $(".img").on("click", function () {
+                var image = $(this);
+                playGif(image);
+            });
         });
-    });
+    } else {
+        offset = 0;
+        $("#gifSection").empty();
+        $.ajax({
+            url: baseURL + query + apiKey + limit,
+            method: "GET"
+        }).then(function (result) {
+            // console.log(result);
+            var data = result.data;
+            for (var i = 0; i < data.length; i++) {
+                var imgDiv = $("<div class='image'>");
+                var rating = $("<p>");
+                rating.text("Rating: " + data[i].rating);
+                var image = $("<img class='img' data-state='still'>");
+                image.attr("src", data[i].images.fixed_height_still.url);
+                image.attr("data-still", data[i].images.fixed_height_still.url);
+                image.attr("data-animated", data[i].images.fixed_height.url);
+                imgDiv.append(rating);
+                imgDiv.append(image);
+                $("#gifSection").prepend(imgDiv);
+            }
+            $(".img").on("click", function () {
+                var image = $(this);
+                playGif(image);
+            });
+        });
+    }
 }
 
 function playGif(image) {
@@ -59,6 +89,7 @@ function generateButtons() {
     $("button").on("click", function () {
         var button = $(this);
         generateGifs(button);
+        previous = button.attr("data-hero");
     });
 }
 
