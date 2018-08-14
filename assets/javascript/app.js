@@ -28,6 +28,12 @@ function makeGif(result) {
         favButton.attr("data-still", data[i].images.fixed_height_still.url);
         favButton.attr("data-animated", data[i].images.fixed_height.url);
         favButton.text("Favorite");
+        for (var j = 0; j < favorites.length; j++) {
+            if (favorites[j].still === data[i].images.fixed_height_still.url)
+            {
+                favButton.addClass("active");
+            }
+        }
         imgDiv.append(rating);
         imgDiv.append(image);
         imgDiv.append(favButton);
@@ -39,6 +45,7 @@ function makeGif(result) {
     });
     $(".favButton").on("click", function () {
         var button = $(this);
+        $(this).addClass("active");
         favorite(button);
     })
 }
@@ -99,6 +106,7 @@ function generateButtons() {
 
 
 function favorite(button) {
+    previous = "";
     console.log(favorites);
     var gif = {
         title: button.attr("title"),

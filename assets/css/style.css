@@ -45,6 +45,10 @@ h1 {
     margin: 0 auto;
 }
 
+.active {
+    color: white;
+}
+
 .img {
     border: 10px solid black;
 }
