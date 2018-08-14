@@ -39,15 +39,15 @@ function makeGif(result) {
         imgDiv.append(favButton);
         $("#gifSection").prepend(imgDiv);
     }
-    $(".img").on("click", function () {
-        var image = $(this);
-        playGif(image);
-    });
-    $(".favButton").on("click", function () {
-        var button = $(this);
-        $(this).addClass("active");
-        favorite(button);
-    })
+    // $(".img").on("click", function () {
+    //     var image = $(this);
+    //     playGif(image);
+    // });
+    // $(".favButton").on("click", function () {
+    //     var button = $(this);
+    //     $(this).addClass("active");
+    //     favorite(button);
+    // })
 }
 
 // check for offset if needed then call make gif function
@@ -144,10 +144,15 @@ $(document).ready(function () {
             imgDiv.append(title);
             imgDiv.append(image);
             $("#gifSection").prepend(imgDiv);
-        }
-        $(".img").on("click", function () {
-            var image = $(this);
-            playGif(image);
-        });
+        } 
     });
+    $(document).on("click", ".img", function () {
+        var image = $(this);
+        playGif(image);
+    });
+    $(document).on("click", ".favButton", function () {
+        var button = $(this);
+        $(this).addClass("active");
+        favorite(button);
+    })
 });
