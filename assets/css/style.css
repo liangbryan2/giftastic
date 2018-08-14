@@ -11,6 +11,7 @@ body {
 header {
     transform: rotate(-10deg);
     padding: 20px;
+    animation: headerRotate 10s infinite;
 }
 
 h1 {
@@ -25,6 +26,23 @@ h1 {
     display: inline-block;
     text-align: center;
     padding: 15px
+}
+
+.favorite{ 
+    height: 100px;
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    animation: favoriteAnimate 3s infinite;
+}
+
+.favorite:hover {
+    cursor: pointer;
+}
+
+.favButton {
+    display: block;
+    margin: 0 auto;
 }
 
 .img {
@@ -42,4 +60,22 @@ button:focus {
 
 button:hover {
     cursor: pointer;
+}
+
+@keyframes favoriteAnimate {
+    0%, 100% {
+        transform: scale(0.75, 0.75);
+    }
+    50% {
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes headerRotate {
+    0%, 80% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(3600deg);
+    }
 }
